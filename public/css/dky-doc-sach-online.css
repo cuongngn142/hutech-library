@@ -1,0 +1,106 @@
+.container {
+    width: 80%;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-image: url(/images/hd-dky-tai-khoan-online-images/bg.jpg);
+}
+
+h2, h3 {
+    color: #2c3e50;
+    text-align: center;
+}
+
+p {
+    text-align: justify;
+    line-height: 1.6;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.tomtat {
+    display: flex;
+    justify-content: center; /* Căn giữa ảnh */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    width: 100%; /* Giới hạn khung chứa */
+    overflow: hidden; /* Ẩn phần dư thừa nếu có */
+}
+
+.tomtat img {
+    max-width: 80%; /* Giới hạn chiều rộng ảnh */
+    height: auto; /* Đảm bảo tỷ lệ ảnh */
+    border-radius: 10px; /* Bo góc nếu muốn */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng nhẹ */
+    margin-bottom: 25px;
+}
+
+.tomtat2 {
+    display: flex;
+    justify-content: center; /* Căn giữa ảnh */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    width: 100%; /* Giới hạn khung chứa */
+    overflow: hidden; /* Ẩn phần dư thừa nếu có */
+}
+
+.tomtat2 img {
+    max-width: 80%; /* Giới hạn chiều rộng ảnh */
+    height: auto; /* Đảm bảo tỷ lệ ảnh */
+    border-radius: 10px; /* Bo góc nếu muốn */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng nhẹ */
+}
+
+ol {
+    counter-reset: list-counter; /* Reset bộ đếm danh sách */
+    list-style: none; /* Ẩn số mặc định của danh sách */
+    padding: 0;
+}
+
+ol li {
+    counter-increment: list-counter; /* Tăng bộ đếm */
+    position: relative;
+    padding-left: 50px; /* Để chừa khoảng trống cho số */
+    font-size: 18px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+/* Style số thứ tự */
+ol li::before {
+    content: counter(list-counter);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px;
+    height: 35px;
+    background-color: #007bff; /* Màu nền cho số */
+    color: #fff; /* Màu chữ */
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Hình tròn */
+}
+
+/* Style hình ảnh */
+ol img {
+    display: block;
+    width: 70%; /* Thu nhỏ ảnh */
+    max-width: 300px; /* Giới hạn kích thước tối đa */
+    margin: 10px auto; /* Canh giữa ảnh */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.container h3 {
+    color: red;
+    font-size: 24px;
+    margin-bottom: 10px;
+}

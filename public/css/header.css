@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Header */
+.navbar {
+    background: linear-gradient(45deg, #2c3e50, #3498db);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo h1 img {
+    width: 60px;
+    height: 60px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin-left: 2rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.nav-links li a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0.5rem 0;
+    text-decoration: none;
+    color: white;
+}
+
+.nav-links li img {
+    filter: invert(100%);
+    object-fit: contain;
+    width: 32px;
+    height: 32px;
+}
+
+.nav-links a:hover {
+    color: #f1c40f;
+    transform: scale(1.1);
+}
+
+.nav-links a:hover img {
+    filter: invert(80%) sepia(100%) saturate(300%);
+    transform: scale(1.1);
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    z-index: 1000;
+    background-color: #3498db;
+    border: 1px solid #e0e0e0;
+    padding-right: 40px;
+    padding-bottom: 10px;
+}
+
+.dropdown-menu li {
+    padding: 0;
+    list-style: none;
+}
+
+.dropdown-menu a {
+    color: #2c3e50;
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Hiển thị dropdown khi hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+}

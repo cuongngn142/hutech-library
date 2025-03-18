@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUTECH Library - Giỏ Sách</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 img {
+            width: 60px;
+            height: 60px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .nav-links li a {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 0.5rem 0;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-links li img {
+            filter: invert(100%);
+            object-fit: contain;
+            width: 32px;
+            height: 32px;
+        }
+
+        .nav-links a:hover {
+            color: #f1c40f;
+            transform: scale(1.1);
+        }
+
+        .nav-links a:hover img {
+            filter: invert(80%) sepia(100%) saturate(300%);
+            transform: scale(1.1);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1000;
+            background-color: #3498db;
+            border: 1px solid #e0e0e0;
+            padding-right: 40px;
+            padding-bottom: 10px;
+        }
+
+        .dropdown-menu li {
+            padding: 0;
+            list-style: none;
+        }
+
+        .dropdown-menu a {
+            color: #2c3e50;
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* Shopping Cart Styles */
+        .shopping-cart {
+            padding: 2rem;
+            background-color: #f5f6fa;
+            min-height: 80vh;
+        }
+
+        .cart-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cart-container h2 {
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .cart-items {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            margin-right: 1rem;
+            border-radius: 4px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-details h3 {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-details p {
+            color: #666;
+            margin-bottom: 0.3rem;
+        }
+
+        .remove-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .remove-btn:hover {
+            background: #c0392b;
+        }
+
+        .cart-summary {
+            margin-top: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: right;
+        }
+
+        .cart-summary h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .cart-summary p {
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        .total-quantity {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .borrow-btn {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .borrow-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .cart-item img {
+                margin: 0 0 1rem 0;
+            }
+            
+            .cart-summary {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>
+                    <img src="/images/logos/logo-hutech-book-removebg.png" alt="logo">
+                    HUTECH LIBRARY
+                </h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Trang Chủ</a></li>
+                <li class="dropdown">
+                    <a href="#">Tài Nguyên</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Tài liệu học tập</a></li>
+                        <li><a href="#">Tạp chí Việt Nam</a></li>
+                        <li><a href="/admin">Cơ sở dữ liệu</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Sách</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Sách theo ngành</a></li>
+                        <li><a href="#">Sách theo lĩnh vực</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Hướng Dẫn</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/dky-the-thu-vien">Đăng ký thẻ thư viện</a></li>
+                        <li><a href="/dky-doc-sach-online">Đăng ký đọc trực tuyến</a></li>
+                        <li><a href="/noi-quy">Nội quy thư viện</a></li>
+                    </ul>
+                </li>
+                <li><a href="/cart"><img src="/images/icon-ui/shopping-cart.png" alt="shopping-cart-book"></a></li>
+                <li><a href="/authentication"><img src="/images/icon-ui/profile.png" alt="icon-user"></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Shopping Cart với dữ liệu cứng và radio button -->
+    <section class="shopping-cart">
+        <div class="cart-container">
+            <h2>Giỏ Sách Của Bạn</h2>
+            <div class="cart-items">
+                <!-- Item 1 -->
+                <div class="cart-item">
+                    <input type="checkbox" name="book" value="1" class="book-checkbox" style="margin-right: 1rem;">
+                    <img src="/images/book-sample1.jpg" alt="Book Cover">
+                    <div class="cart-item-details">
+                        <h3>Lập trình JavaScript</h3>
+                        <p>Tác giả: Nguyễn Văn A</p>
+                    </div>
+                    <button class="remove-btn" data-id="1">Xóa</button>
+                </div>
+                <!-- Item 2 -->
+                <div class="cart-item">
+                    <input type="checkbox" name="book" value="2" class="book-checkbox" style="margin-right: 1rem;">
+                    <img src="/images/book-sample2.jpg" alt="Book Cover">
+                    <div class="cart-item-details">
+                        <h3>Thiết kế Web Cơ Bản</h3>
+                        <p>Tác giả: Trần Thị B</p>
+                    </div>
+                    <button class="remove-btn" data-id="2">Xóa</button>
+                </div>
+                <!-- Item 3 -->
+                <div class="cart-item">
+                    <input type="checkbox" name="book" value="3" class="book-checkbox" style="margin-right: 1rem;">
+                    <img src="/images/book-sample3.jpg" alt="Book Cover">
+                    <div class="cart-item-details">
+                        <h3>Cơ sở dữ liệu</h3>
+                        <p>Tác giả: Lê Văn C</p>
+                    </div>
+                    <button class="remove-btn" data-id="3">Xóa</button>
+                </div>
+            </div>
+            
+            <div class="cart-summary">
+                <h3>Tổng Số Sách Đã Chọn</h3>
+                <p>Số lượng: <span class="total-quantity">0</span></p>
+                <button class="borrow-btn" id="borrow-btn">Mượn Sách</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Script để xử lý -->
+    <script>
+        // Cập nhật số lượng sách được chọn
+        const checkboxes = document.querySelectorAll('.book-checkbox');
+        const totalQuantity = document.querySelector('.total-quantity');
+
+        function updateTotal() {
+            const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            totalQuantity.textContent = selectedCount;
+        }
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateTotal);
+        });
+
+        // Xử lý nút Xóa
+        document.querySelectorAll('.remove-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const id = e.target.getAttribute('data-id');
+                const item = e.target.closest('.cart-item');
+                item.remove(); // Xóa khỏi giao diện
+                updateTotal(); // Cập nhật lại tổng
+                alert(`Đã xóa sách với ID: ${id}`);
+            });
+        });
+
+        // Xử lý nút Mượn Sách
+        document.getElementById('borrow-btn').addEventListener('click', () => {
+            const selectedBooks = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => {
+                    const item = cb.closest('.cart-item');
+                    return {
+                        id: cb.value,
+                        title: item.querySelector('h3').textContent,
+                        author: item.querySelector('p').textContent.replace('Tác giả: ', '')
+                    };
+                });
+
+            if (selectedBooks.length === 0) {
+                alert('Vui lòng chọn ít nhất một cuốn sách để mượn!');
+            } else {
+                let borrowSlip = 'PHIẾU MƯỢN SÁCH\n';
+                borrowSlip += 'Thư viện HUTECH\n';
+                borrowSlip += 'Ngày mượn: ' + new Date().toLocaleDateString('vi-VN') + '\n\n';
+                borrowSlip += 'Danh sách sách mượn:\n';
+                selectedBooks.forEach((book, index) => {
+                    borrowSlip += `${index + 1}. ${book.title} - ${book.author}\n`;
+                });
+                borrowSlip += '\nTổng số sách: ' + selectedBooks.length;
+
+                alert(borrowSlip);
+                // Ở đây bạn có thể thêm logic để gửi phiếu mượn đến server nếu cần
+            }
+        });
+    </script>
+</body>
+</html>

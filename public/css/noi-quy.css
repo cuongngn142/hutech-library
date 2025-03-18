@@ -1,0 +1,32 @@
+.container {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.container h1, h2 {
+    color: #004080;
+}
+
+.container h2 {
+    border-bottom: 2px solid #004080;
+    padding-bottom: 5px;
+}
+ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+.note {
+    font-style: italic;
+    color: red;
+}

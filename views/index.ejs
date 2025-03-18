@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="icon" href="/images/logos/logo-hutech-book-removebg.ico" type="image/x-icon">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+        <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Chào Mừng Đến Với Thư Viện HUTECH</h1>
+                    <p>Nơi lưu giữ tri thức - Kết nối tương lai</p>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Tìm kiếm tài liệu...">
+                        <button>Tìm Kiếm</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="services">
+                <h2>Dịch Vụ Nổi Bật</h2>
+                <div class="service-grid">
+                    <div class="service-item">
+                        <h3>Mượn Sách</h3>
+                        <p>Hơn 100.000 đầu sách đa dạng</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>Phòng Đọc</h3>
+                        <p>Không gian học tập hiện đại</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>Tài Liệu Số</h3>
+                        <p>Truy cập online 24/7</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="other">
+                <div class="other-grid">
+                    <!-- Tin Tức -->
+                    <div class="other-item">
+                        <h2 class="section-title" onclick="showSection('news')">TIN TỨC</h2>
+                        <div class="scroll-container" id="news-container">
+                            <button class="scroll-btn prev-btn">&lt;</button>
+                            <div class="news-grid">
+                                <div class="news-item">
+                                    <img src="/images/tin-tuc/dao-tao-tu-xa-dai-hoc-2025-dot2.jpg"
+                                        alt="Tin 1">
+                                    <p class="date">06/03/2025</p>
+                                    <h3>HUTECH thông báo tuyển sinh Chương trình Đào tạo từ xa, trình độ đại học năm 2025 đợt 2 đến hết ngày 05/05/2025</h3>
+                                    <a href="#" class="detail-btn">Xem chi tiết</a>
+                                </div>
+                                <div class="news-item">
+                                    <img src="/images/tin-tuc/huong-dan-dki-dt-tu-xa.jpg" alt="Tin 2">
+                                    <p class="date">06/03/2025</p>
+                                    <h3>Hướng Dẫn Hồ Sơ Nhập Học Của Thí Sinh Chương Trình Đại Học Từ Xa HUTECH</h3>
+                                    <a href="#" class="detail-btn">Xem chi tiết</a>
+                                </div>
+                                <div class="news-item">
+                                    <img src="/images/tin-tuc/ho-so-xet-tuyen-can -nhung-gi.jpg" alt="Tin 3">
+                                    <p class="date">16/01/2025</p>
+                                    <h3>Hồ sơ xét tuyển chương trình đại học từ xa tại HUTECH gồm những gì?</h3>
+                                    <a href="#" class="detail-btn">Xem chi tiết</a>
+                                </div>
+                                <div class="news-item">
+                                    <img src="/images/tin-tuc/le-tot-nghiep-dot1-2025.jpg" alt="Tin 4">
+                                    <p class="date"> 15/01/2025</p>
+                                    <h3>Lễ trao bằng tốt nghiệp Đợt 1 năm 2025 - Đón nhận thành công từ sự nỗ lực</h3>
+                                    <a href="#" class="detail-btn">Xem chi tiết</a>
+                                </div>
+                            </div>
+                            <button class="scroll-btn next-btn">&gt;</button>
+                        </div>
+                    </div>
+
+                    <!-- Sự Kiện -->
+                    <div class="other-item">
+                        <h2 class="section-title" onclick="showSection('events')">SỰ KIỆN</h2>
+                        <div class="scroll-container" id="events-container" style="display: none;">
+                            <button class="scroll-btn prev-btn">&lt;</button>
+                            <div class="events-grid">
+                                <div class="event-item">
+                                    <img src="/images/su-kien/SK1.jpg" alt="Sự kiện 1">
+                                    <p class="date">21/10/2024</p>
+                                    <h3>HUTECH chính thức trở thành thành viên Mạng lưới giải pháp phát triển bền vững (SDSN)</h3>
+                                    <a href="#" class="detail-btn">Xem chi tiết</a>
+                                </div>
+                                <div class="event-item">
+                                    <img src="/images/su-kien/SK2.jpg" alt="Sự kiện 2">
+                                    <p class="date">21/10/2024</p>
+                                    <h3>HUTECH vinh dự đăng cai tổ chức Olympic Tin học Sinh viên Việt Nam, Procon và Kỳ thi lập trình quốc tế ICPC Asia HoChiMinh city 2025</h3>
+                                    <a href="#" class="detail-btn">Xem chi tiết</a>
+                                </div>
+                                <div class="event-item">
+                                    <img src="/images/su-kien/SK3.jpg" alt="Sự kiện 3">
+                                    <p class="date">21/10/2024</p>
+                                    <h3>Doanh nghiệp mang đến nhiều cơ hội phát triển trong tương lai cho sinh viên Khoa Luật tại Lễ khai giảng</h3>
+                                    <a href="#" class="detail-btn">Xem chi tiết</a>
+                                </div>
+                                <div class="event-item">
+                                    <img src="/images/su-kien/SK4.jpg" alt="Sự kiện 4">
+                                    <p class="date">21/10/2024</p>
+                                    <h3>HUTECH hợp tác triển khai các kế hoạch học tập và làm việc cho sinh viên tại Công ty TNHH Okasan Livic Việt Nam</h3>
+                                    <a href="#" class="detail-btn">Xem chi tiết</a>
+                                </div>
+                                <div class="event-item">
+                                    <img src="/images/su-kien/SK5.jpg" alt="Sự kiện 5">
+                                    <p class="date">21/10/2024</p>
+                                    <h3>Tập đoàn Clarivate Analytics chia sẻ một số giải pháp nâng cao vị thế của HUTECH trên trường quốc tế</h3>
+                                    <a href="#" class="detail-btn">Xem chi tiết</a>
+                                </div>
+                            </div>
+                            <button class="scroll-btn next-btn">&gt;</button>
+                        </div>
+                    </div>
+
+                    <!-- Giới Thiệu -->
+                    <div class="other-item">
+                        <h2>GIỚI THIỆU</h2>
+                        <div class="intro-grid">
+                            <div class="intro-video">
+                                <p>HUTECH Dancing Tour: Thư viện, Không gian tự học</p>
+                                <video src="/videos/HUTECH Dancing Tour Thư Viện.mp4"
+                                    poster="/images/thumbnail-videos/thumbnail-video-hutech-dancing-tour-library.jpg"
+                                    controls width="100%"></video>
+                            </div>
+                            <div class="intro-text">
+                                <p id="p1">THƯ VIỆN ĐẠI HỌC HUTECH</p>
+                                <p id="p2">
+                                    Giới thiệu về Thư viện đại học HUTECH
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <%- include('partials/footer') %>
+            <script src="/js/library.js"></script>
+
+</body>
+</html>
