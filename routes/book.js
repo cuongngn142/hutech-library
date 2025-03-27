@@ -4,8 +4,7 @@ const bookController = require('../controllers/bookController');
 const { isLoggedIn } = require('../middleware/auth');
 
 // Danh sách sách
-router.get('/', bookController.getBooksPage);
-
+router.get('/', isLoggedIn, bookController.getBooksPage);
 // Mượn sách
 router.post('/borrow/:id', isLoggedIn, bookController.borrowBook);
 
