@@ -1,0 +1,151 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Quản lý mượn sách</h2>
+
+    <% if (success_msg) { %>
+        <div class="alert alert-success"><%= success_msg %></div>
+    <% } %>
+    <% if (error_msg) { %>
+        <div class="alert alert-danger"><%= error_msg %></div>
+    <% } %>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã mượn</th>
+                            <th>Người mượn</th>
+                            <th>Sách</th>
+                            <th>Ngày mượn</th>
+                            <th>Ngày trả dự kiến</th>
+                            <th>Ngày trả thực tế</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% borrows.forEach(borrow => { %>
+                            <tr>
+                                <td><%= borrow.MaMuon %></td>
+                                <td>
+                                    <%= borrow.MaSV %><br>
+                                    <small class="text-muted"><%= borrow.HoTen || 'N/A' %></small>
+                                </td>
+                                <td>
+                                    <%= borrow.TenSach %><br>
+                                    <small class="text-muted"><%= borrow.TacGia %></small>
+                                </td>
+                                <td><%= new Date(borrow.NgayMuon).toLocaleDateString('vi-VN') %></td>
+                                <td><%= new Date(borrow.NgayTraDuKien).toLocaleDateString('vi-VN') %></td>
+                                <td>
+                                    <%= borrow.NgayTraThucTe ? new Date(borrow.NgayTraThucTe).toLocaleDateString('vi-VN') : 'Chưa trả' %>
+                                </td>
+                                <td>
+                                    <span class="badge <%= borrow.TrangThai === 'Đang mượn' ? 'bg-primary' : 
+                                                         borrow.TrangThai === 'Quá hạn' ? 'bg-danger' : 'bg-success' %>">
+                                        <%= borrow.TrangThai %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <% if (!borrow.NgayTraThucTe) { %>
+                                        <button class="btn btn-sm btn-success mark-returned" 
+                                                data-borrow-id="<%= borrow.MaMuon %>"
+                                                data-ma-sv="<%= borrow.MaSV %>">
+                                            <i class="fas fa-check"></i> Đánh dấu đã trả
+                                        </button>
+                                        <button class="btn btn-sm btn-warning create-fine" 
+                                                data-borrow-id="<%= borrow.MaMuon %>"
+                                                data-ma-sv="<%= borrow.MaSV %>">
+                                            <i class="fas fa-exclamation-triangle"></i> Tạo phiếu phạt
+                                        </button>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.mark-returned').forEach(button => {
+        button.addEventListener('click', async function() {
+            const borrowId = this.dataset.borrowId;
+            const maSV = this.dataset.maSV;
+            if (confirm('Xác nhận sách đã được trả?')) {
+                try {
+                    const response = await fetch('/admin/borrows/return', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            maMuon: borrowId,
+                            maSV: maSV
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra khi cập nhật trạng thái.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi cập nhật trạng thái.');
+                }
+            }
+        });
+    });
+
+    document.querySelectorAll('.create-fine').forEach(button => {
+        button.addEventListener('click', async function() {
+            const borrowId = this.dataset.borrowId;
+            const maSV = this.dataset.maSV;
+            
+            const lyDo = prompt('Nhập lý do phạt:');
+            if (!lyDo) return;
+
+            const soTienPhat = prompt('Nhập số tiền phạt:');
+            if (!soTienPhat || isNaN(soTienPhat) || soTienPhat <= 0) {
+                alert('Vui lòng nhập số tiền phạt hợp lệ');
+                return;
+            }
+
+            if (confirm('Xác nhận tạo phiếu phạt?')) {
+                try {
+                    const response = await fetch('/admin/fines/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            maMuon: borrowId,
+                            lyDo: lyDo,
+                            soTienPhat: parseFloat(soTienPhat)
+                        })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        alert('Tạo phiếu phạt thành công!');
+                        location.reload();
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra khi tạo phiếu phạt.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi tạo phiếu phạt.');
+                }
+            }
+        });
+    });
+});
+</script>
+
+<%- include('../partials/footer') %> 

@@ -1,0 +1,124 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Quản lý Phiếu Phạt</h2>
+
+    <% if (typeof success !== 'undefined' && success) { %>
+        <div class="alert alert-success"><%= success %></div>
+    <% } %>
+    <% if (typeof error !== 'undefined' && error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Mã Phiếu</th>
+                            <th>Sinh Viên</th>
+                            <th>Sách</th>
+                            <th>Ngày Mượn</th>
+                            <th>Ngày Trả Dự Kiến</th>
+                            <th>Ngày Trả Thực Tế</th>
+                            <th>Lý Do</th>
+                            <th>Số Tiền</th>
+                            <th>Ngày Phạt</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (fines && fines.length > 0) { %>
+                            <% fines.forEach(function(fine) { %>
+                                <tr>
+                                    <td><%= fine.MaPhieuPhat %></td>
+                                    <td><%= fine.HoTen %></td>
+                                    <td><%= fine.MaSV %></td>
+                                    <td><%= fine.TenSach %></td>
+                                    <td><%= new Date(fine.NgayMuon).toLocaleDateString('vi-VN') %></td>
+                                    <td><%= new Date(fine.NgayTraDuKien).toLocaleDateString('vi-VN') %></td>
+                                    <td><%= fine.NgayTraThucTe ? new Date(fine.NgayTraThucTe).toLocaleDateString('vi-VN') : 'Chưa trả' %></td>
+                                    <td><%= fine.LyDo %></td>
+                                    <td><%= fine.SoTienPhat.toLocaleString('vi-VN') %>đ</td>
+                                    <td>
+                                        <span class="badge <%= fine.TrangThai === 'Đã đóng phạt' ? 'bg-success' : 'bg-danger' %>">
+                                            <%= fine.TrangThai %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <% if (fine.TrangThai === 'Quá hạn') { %>
+                                            <button class="btn btn-success btn-sm" onclick="markAsPaid(<%= fine.MaPhieuPhat %>)">
+                                                <i class="fas fa-check"></i> Xác nhận đóng phạt
+                                            </button>
+                                        <% } %>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteFine(<%= fine.MaPhieuPhat %>)">
+                                            <i class="fas fa-trash"></i> Xóa
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="10" class="text-center">Không có phiếu phạt nào</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function deleteFine(maPhieuPhat) {
+    if (confirm('Bạn có chắc chắn muốn xóa phiếu phạt này?')) {
+        fetch(`/admin/fines/${maPhieuPhat}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Có lỗi xảy ra: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi xóa phiếu phạt');
+        });
+    }
+}
+
+// Xác nhận đóng phạt
+async function markAsPaid(maPhieuPhat) {
+    if (confirm('Bạn có chắc chắn muốn xác nhận đóng phạt?')) {
+        try {
+            const response = await fetch(`/admin/fines/${maPhieuPhat}/mark-paid`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                alert('Xác nhận đóng phạt thành công!');
+                location.reload();
+            } else {
+                const data = await response.json();
+                alert(data.message || 'Có lỗi xảy ra!');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra!');
+        }
+    }
+}
+</script>
+
+<%- include('../partials/footer') %> 

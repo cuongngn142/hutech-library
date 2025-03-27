@@ -1,0 +1,48 @@
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Đăng Ký</h3>
+                </div>
+                <div class="card-body">
+                    <% if (error) { %>
+                        <div class="alert alert-danger"><%= error %></div>
+                    <% } %>
+                    <form action="/register" method="POST">
+                        <div class="form-group mb-3">
+                            <label for="tenDangNhap">Tên đăng nhập:</label>
+                            <input type="text" class="form-control" id="tenDangNhap" name="tenDangNhap" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="matKhau">Mật khẩu:</label>
+                            <input type="password" class="form-control" id="matKhau" name="matKhau" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="maSV">Mã sinh viên:</label>
+                            <input type="text" class="form-control" id="maSV" name="maSV" pattern="[0-9]{10}" required>
+                            <small class="form-text text-muted">Nhập mã sinh viên 10 số</small>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="maVaiTro">Vai trò:</label>
+                            <select class="form-control" id="maVaiTro" name="maVaiTro" required>
+                                <option value="16">Sinh viên</option>
+                                <option value="1">Admin</option>
+                            </select>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Đăng Ký</button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Đã có tài khoản? <a href="/login">Đăng nhập</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %> 

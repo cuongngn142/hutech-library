@@ -1,0 +1,185 @@
+<%- include('../partials/header') %>
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-4">
+                <h1 class="h2">Quản lý sinh viên</h1>
+                <button class="btn btn-primary" onclick="showAddStudentModal()">
+                    <i class="bi bi-plus-circle"></i> Thêm sinh viên
+                </button>
+            </div>
+
+            <!-- Flash messages -->
+            <% if (success_msg) { %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= success_msg %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <% } %>
+            <% if (error_msg) { %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <%= error_msg %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <% } %>
+
+            <!-- Students table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Mã SV</th>
+                                    <th>Họ tên</th>
+                                    <th>Email</th>
+                                    <th>Ngày đăng ký</th>
+                                    <th>Ngày hết hạn</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% students.forEach(student => { %>
+                                    <tr>
+                                        <td><%= student.MaSV %></td>
+                                        <td><%= student.HoTen %></td>
+                                        <td><%= student.Email %></td>
+                                        <td><%= new Date(student.NgayDangKy).toLocaleDateString('vi-VN') %></td>
+                                        <td><%= new Date(student.NgayHetHan).toLocaleDateString('vi-VN') %></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-warning me-2" onclick="showEditStudentModal('<%= student.MaSV %>', '<%= student.HoTen %>', '<%= student.Email %>', '<%= student.NgayHetHan.toISOString().split('T')[0] %>')">
+                                                <i class="bi bi-pencil-square"></i> Sửa
+                                            </button>
+                                            <button class="btn btn-sm btn-danger" onclick="deleteStudent('<%= student.MaSV %>')">
+                                                <i class="bi bi-trash3"></i> Xóa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Student Modal -->
+<div class="modal fade" id="addStudentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm sinh viên mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/admin/students/add" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Mã sinh viên</label>
+                        <input type="text" class="form-control" name="maSV" required pattern="[0-9]{10}" title="Mã sinh viên phải có 10 chữ số">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input type="text" class="form-control" name="hoTen" required minlength="6">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ngày hết hạn</label>
+                        <input type="date" class="form-control" name="ngayHetHan" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Student Modal -->
+<div class="modal fade" id="editStudentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chỉnh sửa thông tin sinh viên</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editStudentForm" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Mã sinh viên</label>
+                        <input type="text" class="form-control" name="maSV" id="editMaSV" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input type="text" class="form-control" name="hoTen" id="editHoTen" required minlength="6">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" id="editEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ngày hết hạn</label>
+                        <input type="date" class="form-control" name="ngayHetHan" id="editNgayHetHan" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Show add student modal
+    function showAddStudentModal() {
+        const modal = new bootstrap.Modal(document.getElementById('addStudentModal'));
+        modal.show();
+    }
+
+    // Show edit student modal
+    function showEditStudentModal(maSV, hoTen, email, ngayHetHan) {
+        document.getElementById('editMaSV').value = maSV;
+        document.getElementById('editHoTen').value = hoTen;
+        document.getElementById('editEmail').value = email;
+        document.getElementById('editNgayHetHan').value = ngayHetHan;
+        document.getElementById('editStudentForm').action = `/admin/students/edit/${maSV}`;
+        
+        const modal = new bootstrap.Modal(document.getElementById('editStudentModal'));
+        modal.show();
+    }
+
+    // Delete student
+    function deleteStudent(maSV) {
+        if (confirm('Bạn có chắc chắn muốn xóa sinh viên này?')) {
+            fetch(`/admin/students/delete/${maSV}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert(data.message || 'Có lỗi xảy ra khi xóa sinh viên');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi xóa sinh viên');
+            });
+        }
+    }
+</script>
+
+<%- include('../partials/footer') %> 

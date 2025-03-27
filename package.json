@@ -1,8 +1,24 @@
 {
+  "name": "hutech-library",
+  "version": "1.0.0",
+  "description": "HUTECH Library Management System",
+  "main": "app.js",
+  "scripts": {
+    "start": "node --no-deprecation app.js",
+    "dev": "nodemon --no-deprecation app.js"
+  },
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "body-parser": "^1.20.3",
+    "connect-flash": "^0.1.1",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
-    "mssql": "^11.0.1"
+    "express-session": "^1.18.1",
+    "mssql": "^11.0.1",
+    "multer": "^1.4.5-lts.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }

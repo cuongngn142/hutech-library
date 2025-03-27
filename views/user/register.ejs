@@ -1,0 +1,108 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Đăng ký tài khoản thư viện</h3>
+                </div>
+                <div class="card-body">
+                    <% if (error_msg) { %>
+                        <div class="alert alert-danger"><%= error_msg %></div>
+                    <% } %>
+                    
+                    <form action="/user/register" method="POST" id="registerForm">
+                        <div class="mb-3">
+                            <label for="maSV" class="form-label">Mã sinh viên</label>
+                            <input type="text" class="form-control" id="maSV" name="maSV" 
+                                   pattern="[0-9]{10}" required
+                                   title="Mã sinh viên phải có 10 chữ số">
+                            <div class="form-text">Nhập mã sinh viên HUTECH (10 chữ số)</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tenDangNhap" class="form-label">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="tenDangNhap" name="tenDangNhap" 
+                                   minlength="6" required>
+                            <div class="form-text">Tên đăng nhập phải có ít nhất 6 ký tự</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="matKhau" class="form-label">Mật khẩu</label>
+                            <input type="password" class="form-control" id="matKhau" name="matKhau" 
+                                   minlength="8" required>
+                            <div class="form-text">Mật khẩu phải có ít nhất 8 ký tự</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="xacNhanMatKhau" class="form-label">Xác nhận mật khẩu</label>
+                            <input type="password" class="form-control" id="xacNhanMatKhau" 
+                                   name="xacNhanMatKhau" minlength="8" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="maVaiTro" class="form-label">Vai trò</label>
+                            <select class="form-select" id="maVaiTro" name="maVaiTro" required>
+                                <option value="2">Sinh viên</option>
+                                <option value="1">Admin</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Đăng ký</button>
+                            <a href="/user/login" class="btn btn-link text-center">Đã có tài khoản? Đăng nhập</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registerForm');
+    const matKhau = document.getElementById('matKhau');
+    const xacNhanMatKhau = document.getElementById('xacNhanMatKhau');
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (matKhau.value !== xacNhanMatKhau.value) {
+            alert('Mật khẩu xác nhận không khớp!');
+            return;
+        }
+
+        try {
+            const formData = new FormData(form);
+            const response = await fetch('/user/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    maSV: formData.get('maSV'),
+                    tenDangNhap: formData.get('tenDangNhap'),
+                    matKhau: formData.get('matKhau'),
+                    maVaiTro: parseInt(formData.get('maVaiTro'))
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                alert('Đăng ký thành công!');
+                window.location.href = '/user/login';
+            } else {
+                alert(data.message || 'Có lỗi xảy ra khi đăng ký');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi đăng ký');
+        }
+    });
+});
+</script>
+
+<%- include('../partials/footer') %> 

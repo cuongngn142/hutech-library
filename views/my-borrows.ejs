@@ -1,0 +1,70 @@
+<%- include('partials/header') %>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Sách đang mượn</h2>
+
+    <% if (typeof success !== 'undefined' && success) { %>
+        <div class="alert alert-success"><%= success %></div>
+    <% } %>
+    <% if (typeof error !== 'undefined' && error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sách</th>
+                            <th>Ngày mượn</th>
+                            <th>Ngày trả dự kiến</th>
+                            <th>Ngày trả thực tế</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (borrows && borrows.length > 0) { %>
+                            <% borrows.forEach(function(borrow) { %>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <% if (borrow.URLAnh) { %>
+                                                <img src="<%= borrow.URLAnh %>" alt="<%= borrow.TenSach %>" class="me-3" style="width: 50px; height: 70px; object-fit: cover;">
+                                            <% } %>
+                                            <div>
+                                                <h6 class="mb-0"><%= borrow.TenSach %></h6>
+                                                <small class="text-muted"><%= borrow.TacGia %></small>
+                                                <br>
+                                                <small class="text-muted"><%= borrow.TenViTri %></small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><%= new Date(borrow.NgayMuon).toLocaleDateString('vi-VN') %></td>
+                                    <td><%= new Date(borrow.NgayTraDuKien).toLocaleDateString('vi-VN') %></td>
+                                    <td>
+                                        <%= borrow.NgayTraThucTe ? new Date(borrow.NgayTraThucTe).toLocaleDateString('vi-VN') : 'Chưa trả' %>
+                                    </td>
+                                    <td>
+                                        <span class="badge <%= 
+                                            borrow.TrangThai === 'Đang mượn' ? 'bg-primary' : 
+                                            borrow.TrangThai === 'Quá hạn' ? 'bg-danger' : 'bg-success' 
+                                        %>">
+                                            <%= borrow.TrangThai %>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="5" class="text-center">Bạn chưa mượn sách nào</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %> 

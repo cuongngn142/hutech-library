@@ -1,0 +1,172 @@
+<%- include('partials/header') %>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Giỏ sách</h2>
+
+    <% if (success_msg) { %>
+        <div class="alert alert-success"><%= success_msg %></div>
+    <% } %>
+    <% if (error_msg) { %>
+        <div class="alert alert-danger"><%= error_msg %></div>
+    <% } %>
+
+    <% if (cart && cart.length > 0) { %>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sách</th>
+                        <th>Số lượng</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% cart.forEach(function(item) { %>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <% if (item.URLAnh) { %>
+                                        <img src="<%= item.URLAnh %>" alt="<%= item.TenSach %>" class="me-3" style="width: 50px; height: 70px; object-fit: cover;">
+                                    <% } %>
+                                    <div>
+                                        <h5 class="mb-0"><%= item.TenSach %></h5>
+                                        <p class="mb-0">Tác giả: <%= item.TacGia %></p>
+                                        <p class="mb-0">Vị trí: <%= item.TenViTri %></p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group" style="width: 120px;">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="updateQuantity(<%= item.MaSach %>, <%= item.SoLuong - 1 %>)">-</button>
+                                    <input type="number" class="form-control text-center" value="<%= item.SoLuong %>" readonly>
+                                    <button class="btn btn-outline-secondary" type="button" onclick="updateQuantity(<%= item.MaSach %>, <%= item.SoLuong + 1 %>)">+</button>
+                                </div>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="removeFromCart(<%= item.MaSach %>)">Xóa</button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-end mt-3">
+            <button class="btn btn-primary" onclick="showBorrowModal()">Mượn sách</button>
+        </div>
+    <% } else { %>
+        <div class="alert alert-info">
+            Giỏ sách trống. <a href="/sach">Tiếp tục mua sắm</a>
+        </div>
+    <% } %>
+</div>
+
+<!-- Form mượn sách -->
+<div class="modal fade" id="borrowModal" tabindex="-1" aria-labelledby="borrowModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="borrowModalLabel">Mượn sách</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="borrowForm">
+                    <div class="mb-3">
+                        <label for="ngayTraDuKien" class="form-label">Ngày trả dự kiến</label>
+                        <input type="date" class="form-control" id="ngayTraDuKien" name="ngayTraDuKien" required>
+                        <div class="form-text">Ngày trả không được quá 30 ngày kể từ ngày mượn</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" id="confirmBorrow">Xác nhận mượn</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Cập nhật số lượng sách trong giỏ
+async function updateQuantity(bookId, quantity) {
+    if (quantity < 1) return;
+    
+    try {
+        const response = await fetch(`/sach/cart/${bookId}/quantity`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ quantity })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra khi cập nhật số lượng');
+    }
+}
+
+// Xóa sách khỏi giỏ
+async function removeFromCart(bookId) {
+    if (!confirm('Bạn có chắc muốn xóa sách này khỏi giỏ?')) return;
+    
+    try {
+        const response = await fetch(`/sach/cart/${bookId}`, {
+            method: 'DELETE'
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra khi xóa sách');
+    }
+}
+
+// Hiển thị modal mượn sách
+function showBorrowModal() {
+    const modal = new bootstrap.Modal(document.getElementById('borrowModal'));
+    modal.show();
+}
+
+// Xử lý mượn sách
+document.getElementById('confirmBorrow').addEventListener('click', async function() {
+    const ngayTraDuKien = document.getElementById('ngayTraDuKien').value;
+    if (!ngayTraDuKien) {
+        alert('Vui lòng chọn ngày trả dự kiến');
+        return;
+    }
+
+    try {
+        const response = await fetch('/sach/borrow', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ngayTraDuKien })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert('Mượn sách thành công!');
+            window.location.href = '/sach/my-borrows';
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra khi mượn sách');
+    }
+});
+</script>
+
+<%- include('partials/footer') %> 

@@ -1,0 +1,84 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Chỉnh sửa sách</h3>
+                </div>
+                <div class="card-body">
+                    <% if (error_msg) { %>
+                        <div class="alert alert-danger"><%= error_msg %></div>
+                    <% } %>
+
+                    <form action="/admin/books/edit/<%= book.MaSach %>" method="POST">
+                        <div class="mb-3">
+                            <label for="tenSach" class="form-label">Tên sách <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="tenSach" name="tenSach" value="<%= book.TenSach %>" required minlength="5">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tacGia" class="form-label">Tác giả <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="tacGia" name="tacGia" value="<%= book.TacGia %>" required minlength="3">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="namXuatBan" class="form-label">Năm xuất bản <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="namXuatBan" name="namXuatBan" 
+                                   value="<%= book.NamXuatBan %>" required min="1900" max="<%= new Date().getFullYear() %>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="soLuongTon" class="form-label">Số lượng tồn <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="soLuongTon" name="soLuongTon" 
+                                   value="<%= book.SoLuongTon %>" required min="0">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="maViTri" class="form-label">Vị trí <span class="text-danger">*</span></label>
+                            <select class="form-select" id="maViTri" name="maViTri" required>
+                                <option value="">Chọn vị trí</option>
+                                <% locations.forEach(location => { %>
+                                    <option value="<%= location.MaViTri %>" <%= book.MaViTri == location.MaViTri ? 'selected' : '' %>>
+                                        <%= location.TenViTri %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="theLoai" class="form-label">Thể loại <span class="text-danger">*</span></label>
+                            <select class="form-select" id="theLoai" name="theLoai" multiple required>
+                                <% categories.forEach(category => { %>
+                                    <option value="<%= category.MaTheLoai %>" 
+                                            <%= book.TheLoai && book.TheLoai.includes(category.MaTheLoai) ? 'selected' : '' %>>
+                                        <%= category.TenTheLoai %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                            <small class="form-text text-muted">Giữ Ctrl để chọn nhiều thể loại</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="urlAnh" class="form-label">URL ảnh</label>
+                            <input type="url" class="form-control" id="urlAnh" name="urlAnh" value="<%= book.URLAnh %>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="filePDF" class="form-label">URL file PDF</label>
+                            <input type="url" class="form-control" id="filePDF" name="filePDF" value="<%= book.FilePDF %>">
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                            <a href="/admin/books" class="btn btn-secondary">Quay lại</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %> 

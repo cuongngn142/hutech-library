@@ -1,0 +1,103 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Quản lý sách</h2>
+        <a href="/admin/books/add" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Thêm sách mới
+        </a>
+    </div>
+
+    <% if (success_msg) { %>
+        <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+            <%= success_msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <% if (error_msg) { %>
+        <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+            <%= error_msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Mã sách</th>
+                    <th>Tên sách</th>
+                    <th>Tác giả</th>
+                    <th>Năm XB</th>
+                    <th>Số lượng tồn</th>
+                    <th>Vị trí</th>
+                    <th>Thể loại</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% books.forEach(book => { %>
+                    <tr>
+                        <td><%= book.MaSach %></td>
+                        <td>
+                            <%= book.TenSach %>
+                            <% if (book.URLAnh) { %>
+                                <br>
+                                <img src="<%= book.URLAnh %>" alt="<%= book.TenSach %>" style="max-width: 100px;">
+                            <% } %>
+                        </td>
+                        <td><%= book.TacGia %></td>
+                        <td><%= book.NamXuatBan %></td>
+                        <td><%= book.SoLuongTon %></td>
+                        <td><%= book.TenViTri %></td>
+                        <td><%= book.TheLoai %></td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/admin/books/edit/<%= book.MaSach %>" class="btn btn-sm btn-info">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <% if (book.FilePDF) { %>
+                                    <a href="<%= book.FilePDF %>" class="btn btn-sm btn-secondary" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </a>
+                                <% } %>
+                                <button class="btn btn-sm btn-danger delete-book" data-book-id="<%= book.MaSach %>">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.delete-book').forEach(button => {
+        button.addEventListener('click', async function() {
+            const bookId = this.dataset.bookId;
+            if (confirm('Bạn có chắc muốn xóa sách này?')) {
+                try {
+                    const response = await fetch(`/admin/books/delete/${bookId}`, {
+                        method: 'POST'
+                    });
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        const data = await response.json();
+                        alert(data.message || 'Có lỗi xảy ra khi xóa sách.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi xóa sách.');
+                }
+            }
+        });
+    });
+});
+</script>
+
+<%- include('../partials/footer') %> 

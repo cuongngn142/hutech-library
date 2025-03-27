@@ -1,0 +1,180 @@
+<%- include('partials/header') %>
+
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-4 text-primary">Hướng dẫn sử dụng</h1>
+            <p class="lead text-muted">Tìm hiểu cách sử dụng thư viện hiệu quả</p>
+        </div>
+    </div>
+
+    <!-- Các bước đăng ký -->
+    <div class="row mb-5">
+        <div class="col">
+            <h2 class="mb-4">Đăng ký thẻ thư viện</h2>
+            <div class="timeline">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                    <i class="fas fa-user-plus fa-2x"></i>
+                                </div>
+                                <h5 class="card-title">Bước 1</h5>
+                                <p class="card-text">Đăng ký tài khoản trên website</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                    <i class="fas fa-id-card fa-2x"></i>
+                                </div>
+                                <h5 class="card-title">Bước 2</h5>
+                                <p class="card-text">Nộp hồ sơ tại quầy thư viện</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                    <i class="fas fa-check-circle fa-2x"></i>
+                                </div>
+                                <h5 class="card-title">Bước 3</h5>
+                                <p class="card-text">Nhận thẻ và bắt đầu sử dụng</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hướng dẫn mượn sách -->
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">
+                        <i class="fas fa-book-reader text-primary me-2"></i>
+                        Hướng dẫn mượn sách
+                    </h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Tìm kiếm sách trong danh mục
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Thêm sách vào giỏ
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Đến quầy thư viện để nhận sách
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Trả sách đúng hạn
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">
+                        <i class="fas fa-clock text-primary me-2"></i>
+                        Thời gian mượn sách
+                    </h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="fas fa-info-circle text-info me-2"></i>
+                            Thời gian mượn tối đa: 30 ngày
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-info-circle text-info me-2"></i>
+                            Số lượng sách mượn tối đa: 5 cuốn
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-info-circle text-info me-2"></i>
+                            Gia hạn tối đa: 2 lần
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-info-circle text-info me-2"></i>
+                            Phí phạt quá hạn: 5.000đ/ngày
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Câu hỏi thường gặp -->
+    <div class="row">
+        <div class="col">
+            <h2 class="mb-4">Câu hỏi thường gặp</h2>
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            Làm thế nào để đăng ký thẻ thư viện?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Để đăng ký thẻ thư viện, bạn cần:
+                            <ol>
+                                <li>Đăng ký tài khoản trên website</li>
+                                <li>Chuẩn bị hồ sơ theo yêu cầu</li>
+                                <li>Nộp hồ sơ tại quầy thư viện</li>
+                                <li>Nhận thẻ sau 3 ngày làm việc</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Có thể gia hạn thời gian mượn sách không?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Có, bạn có thể gia hạn thời gian mượn sách tối đa 2 lần, mỗi lần 15 ngày. 
+                            Để gia hạn, bạn cần:
+                            <ul>
+                                <li>Đăng nhập vào tài khoản</li>
+                                <li>Vào mục "Sách đang mượn"</li>
+                                <li>Chọn sách cần gia hạn</li>
+                                <li>Nhấn nút "Gia hạn"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            Làm gì khi mất thẻ thư viện?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Khi mất thẻ thư viện, bạn cần:
+                            <ol>
+                                <li>Báo cáo mất thẻ ngay lập tức</li>
+                                <li>Nộp đơn xin cấp lại thẻ</li>
+                                <li>Nộp phí cấp lại thẻ: 50.000đ</li>
+                                <li>Nhận thẻ mới sau 3 ngày làm việc</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %> 
